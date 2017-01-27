@@ -29,8 +29,10 @@ public class MainScreenControl : MonoBehaviour {
 	{
 		GameObject player = GameObject.Find("Player");
 		Vector3 position = player.transform.position;
+
 		float speed = GetComponent< MainScreenStats >().movementSpeed;
-		if (Input.GetKeyDown (KeyCode.DownArrow))
+
+        if (Input.GetKeyDown (KeyCode.DownArrow))
 		{
 			GameObject.Find("Player").transform.position = new Vector3 (position.x, position.y - speed, position.z);
 		}
@@ -51,7 +53,12 @@ public class MainScreenControl : MonoBehaviour {
 		else if (Input.GetKeyDown (KeyCode.Space))
 		{
 			print("Space Bar Attack");
-		}
+
+            if (!GameObject.Find("Spell"))
+            {
+                GetComponent< MainScreenLogic >().SpellCast();
+            }
+        }
 
 	}
 }
