@@ -14,9 +14,13 @@ public class MainScreenGUI : MonoBehaviour {
 	}
 	private void OnGUI ()
 	{
-		if (GetComponent< MainScreenStats>().startGameFlag)
+		if (GetComponent< MainScreenStats >().startGameFlag)
 		{
 			DisplayMainScreen();
+		}
+		else if (GetComponent< MainScreenStats >().endGameFlag)
+		{
+			DisplayEndScreen();
 		}
 	}
 
@@ -43,4 +47,17 @@ public class MainScreenGUI : MonoBehaviour {
 		GameObject.Find("Total Score").GetComponent< Text >().text = GetComponent< MainScreenStats >().totalScore.ToString();
 	}
 
+	private void DisplayEndScreen()
+	{
+		Destroy(GameObject.Find("Player"));
+		Destroy(GameObject.Find("Time Left"));
+		Destroy(GameObject.Find("Total Score"));
+		GameObject.Find("Game Text").GetComponent< Text >().text = "End Game";
+		DisplayHighScores();
+	}
+
+	private void DisplayHighScores()
+	{
+		
+	}
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class MainScreenLogic : MonoBehaviour {
 
@@ -18,6 +20,15 @@ public class MainScreenLogic : MonoBehaviour {
     private void Update () {
 
 		DecreaseTime();
+		try
+		{
+			CheckBoundaries();
+
+		}
+		catch (Exception)
+		{
+			// Maybe put something here.
+		}
 
         if (spellMovementFlag)
         {
@@ -109,5 +120,20 @@ public class MainScreenLogic : MonoBehaviour {
     public void SpellMovement()
     {
         GameObject.Find("Spell").GetComponent< Transform >().position =  Vector3.Lerp(spellPosition, finalPosition, interpolant);        
+    }
+
+    /// <summary>
+    /// Checks the boundaries for the game so the player does not fly out into infinity.
+    /// </summary>
+    public void CheckBoundaries()
+    {
+		Vector3 playerPosition = GameObject.Find("Player").transform.position;
+		int worldHeight = GetComponent< MainScreenStats >().worldHeight;
+
+		if (playerPosition.y <= -worldHeight)
+		{
+			GetComponent< MainScreenStats >().startGameFlag = false;
+			GetComponent< MainScreenStats >().endGameFlag = true;
+		}
     }
 }

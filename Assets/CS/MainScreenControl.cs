@@ -11,11 +11,18 @@ public class MainScreenControl : MonoBehaviour {
 	// Private and Public Variables
 
 	// Event Functions
-	private void Update () {
-		try {
+	private void Update ()
+	{
+		
+	}
+	private void FixedUpdate ()
+	{
+		try
+		{
 			GetUserKeyBoardInput();
-
-		} catch (Exception) {
+		}
+		catch (Exception)
+		{
 			// Maybe put something here.
 		}
 	}
@@ -30,25 +37,22 @@ public class MainScreenControl : MonoBehaviour {
 		GameObject player = GameObject.Find("Player");
 		Vector3 position = player.transform.position;
 
+
 		float speed = GetComponent< MainScreenStats >().movementSpeed;
 
-        if (Input.GetKeyDown (KeyCode.DownArrow))
+        if (Input.GetKeyDown (KeyCode.UpArrow))
 		{
-			GameObject.Find("Player").transform.position = new Vector3 (position.x, position.y - speed, position.z);
-		}
-		else if (Input.GetKeyDown (KeyCode.UpArrow))
-		{
-			GameObject.Find("Player").transform.position = new Vector3 (position.x, position.y + speed, position.z);
+			player.GetComponent< Rigidbody2D >().AddForce(player.transform.up * speed);
 		}
 		else if (Input.GetKeyDown (KeyCode.LeftArrow))
 		{
 			player.GetComponent< SpriteRenderer >().flipX = true;
-			GameObject.Find("Player").transform.position = new Vector3 (position.x - speed, position.y, position.z);
+			player.GetComponent< Rigidbody2D >().AddForce(-player.transform.right * speed);
 		}
 		else if (Input.GetKeyDown (KeyCode.RightArrow))
 		{
-			GameObject.Find("Player").GetComponent< SpriteRenderer >().flipX = false;
-			GameObject.Find("Player").transform.position = new Vector3 (position.x + speed, position.y, position.z);
+			player.GetComponent< SpriteRenderer >().flipX = false;
+			player.GetComponent< Rigidbody2D >().AddForce(player.transform.right * speed);
 		}
 		else if (Input.GetKeyDown (KeyCode.Space))
 		{
