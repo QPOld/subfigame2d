@@ -22,7 +22,10 @@ public class MainScreenLogic : MonoBehaviour {
         if (spellMovementFlag)
         {
             SpellMovement();
-            interpolant += Time.deltaTime;
+
+            float spellSpeed = GetComponent < MainScreenStats >().spellSpeed;
+            interpolant += Time.deltaTime / spellSpeed;
+            print(interpolant);
             if (interpolant >= 1.0f)
             {
                 interpolant = 0.0f;
@@ -87,13 +90,14 @@ public class MainScreenLogic : MonoBehaviour {
         spellPosition = spell.transform.position;
         spell.transform.position = player.transform.position; // Set position to the player position.
 
+        float spellDistance = GetComponent< MainScreenStats >().spellDistance;
         if (direction)
         {
-            finalPosition = spellPosition + new Vector3(-Screen.width,0,0);
+            finalPosition = new Vector3(-spellDistance, playerPosition.y, playerPosition.z);
         }
         else
         {
-            finalPosition = spellPosition + new Vector3(Screen.width, 0, 0);
+			finalPosition = new Vector3(spellDistance, playerPosition.y, playerPosition.z);
         }
         spellMovementFlag = true;
     }
@@ -104,6 +108,6 @@ public class MainScreenLogic : MonoBehaviour {
     /// </summary>
     public void SpellMovement()
     {
-        Vector3.Lerp(spellPosition, finalPosition, interpolant);        
+        GameObject.Find("Spell").GetComponent< Transform >().position =  Vector3.Lerp(spellPosition, finalPosition, interpolant);        
     }
 }

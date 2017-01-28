@@ -11,5 +11,7 @@ public class MainScreenStats : MonoBehaviour {
 	public bool startGameFlag = false;
 	public bool endGameFlag = false;
 	public float movementSpeed = 1.0f;
+	public float spellDistance = 6.0f;
+	public float spellSpeed = 5.0f;
 
 }
