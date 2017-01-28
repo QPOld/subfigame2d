@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Main screen control.
-/// Create an extensive boundary function.
+/// Main screen control. Movement is forced related so fixed update must be used.
 /// </summary>
 public class MainScreenControl : MonoBehaviour {
 	// Private and Public Variables
 
 	// Event Functions
-	private void Update ()
+	private void Update()
 	{
-		
+		StartScreenController();
 	}
 	private void FixedUpdate ()
 	{
@@ -30,37 +30,57 @@ public class MainScreenControl : MonoBehaviour {
 	// Private and Public Functions
 
 	/// <summary>
-	/// Gets the user key board input.
+	/// Gets the user key board input. The player can move left and right
+	/// with the arrow keys and jump with the space bar. Eventually the player
+	/// can fight enemies with spells casted with X.
 	/// </summary>
 	private void GetUserKeyBoardInput ()
 	{
-		GameObject player = GameObject.Find("Player");
-		Vector3 position = player.transform.position;
+		GameObject player = GameObject.Find("Player"); // Get the player game object.
 
+		Vector3 position = player.transform.position; // Current player position.
+		Rigidbody2D body = player.GetComponent< Rigidbody2D >(); // Player's rigid body.
+		SpriteRenderer sprite = player.GetComponent< SpriteRenderer >(); // The players sprite.
 
-		float speed = GetComponent< MainScreenStats >().movementSpeed;
+		float speed = GetComponent< MainScreenStats >().movementSpeed; // Player's movement speed.
 
-        if (Input.GetKeyDown (KeyCode.UpArrow))
+        if (Input.GetKeyDown (KeyCode.LeftArrow))
 		{
-			player.GetComponent< Rigidbody2D >().AddForce(player.transform.up * speed);
-		}
-		else if (Input.GetKeyDown (KeyCode.LeftArrow))
-		{
-			player.GetComponent< SpriteRenderer >().flipX = true;
-			player.GetComponent< Rigidbody2D >().AddForce(-player.transform.right * speed);
+			sprite.flipX = true; // Make sprite face to the left.
+			body.AddForce(-player.transform.right * speed); // Applies a force in the -x direction.
 		}
 		else if (Input.GetKeyDown (KeyCode.RightArrow))
 		{
-			player.GetComponent< SpriteRenderer >().flipX = false;
-			player.GetComponent< Rigidbody2D >().AddForce(player.transform.right * speed);
+			sprite.flipX = false; // Make sprite face to the right.
+			body.AddForce(player.transform.right * speed); // Applies a force in the x direction.
 		}
 		else if (Input.GetKeyDown (KeyCode.Space))
 		{
-            if (!GameObject.Find("Spell"))
+			body.AddForce(player.transform.up * speed); // Applies a force in the y direction.
+		}
+		else if (Input.GetKeyDown (KeyCode.X))
+        {
+			if (!GameObject.Find("Spell"))
             {
-                GetComponent< MainScreenLogic >().SpellCast();
+                GetComponent< MainScreenLogic >().SpellCast(); // Cast a spell to attack and defend.
             }
         }
+	}
 
+	/// <summary>
+	/// Starts the screen controller. This allows for a better flow when starting a new game.
+	/// </summary>
+	private void StartScreenController()
+	{
+		bool startFlag = GetComponent< MainScreenStats >().startGameFlag;
+		bool endFlag = GetComponent< MainScreenStats >().endGameFlag;
+
+		if (!startFlag && !endFlag) // Start Screen only.
+		{
+			if (Input.GetKeyDown (KeyCode.Space))
+			{
+				GetComponent< MainScreenGUI >().StartButton();
+			}
+		}
 	}
 }

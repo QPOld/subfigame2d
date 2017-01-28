@@ -14,4 +14,5 @@ public class MainScreenStats : MonoBehaviour {
 	public float spellDistance = 5.0f;
 	public float spellSpeed = 5.0f;
 	public int worldHeight = 5;
+	public int worldWidth = 5;
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,9 +34,11 @@ public class MainScreenGUI : MonoBehaviour {
 	public void StartButton ()
 	{
 		Destroy(GameObject.Find("Start Button"));
+		Destroy(GameObject.Find("Exit Button"));
 		GameObject.Find("Game Text").GetComponent< Text >().text = "";
 		GetComponent< MainScreenStats>().startGameFlag = true;
 		GetComponent< MainScreenLogic >().LoadPreFab("Player");
+		GetComponent< MainScreenLogic >().GenerateRandomPlatform("Floor");
 	}
 
 	/// <summary>
@@ -52,7 +55,12 @@ public class MainScreenGUI : MonoBehaviour {
 		Destroy(GameObject.Find("Player"));
 		Destroy(GameObject.Find("Time Left"));
 		Destroy(GameObject.Find("Total Score"));
+		Destroy(GameObject.Find("Floor"));
 		GameObject.Find("Game Text").GetComponent< Text >().text = "End Game";
+		if (GUI.Button(new Rect(35, 35, 60, 30), "Restart"))
+		{
+			SceneManager.LoadScene("MainScreen"); // Reloads the screen.
+		}
 		DisplayHighScores();
 	}
 

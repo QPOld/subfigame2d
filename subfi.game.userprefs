@@ -2,10 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CS/MainScreenLogic.cs">
     <Files>
-      <File FileName="Assets/CS/MainScreenControl.cs" Line="23" Column="1" />
-      <File FileName="Assets/CS/MainScreenLogic.cs" Line="138" Column="6" />
-      <File FileName="Assets/CS/MainScreenStats.cs" Line="16" Column="28" />
-      <File FileName="Assets/CS/MainScreenGUI.cs" Line="38" Column="3" />
+      <File FileName="Assets/CS/MainScreenControl.cs" Line="78" Column="52" />
+      <File FileName="Assets/CS/MainScreenLogic.cs" Line="173" Column="1" />
+      <File FileName="Assets/CS/MainScreenStats.cs" Line="17" Column="23" />
+      <File FileName="Assets/CS/MainScreenGUI.cs" Line="60" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

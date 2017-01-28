@@ -20,6 +20,7 @@ public class MainScreenLogic : MonoBehaviour {
     private void Update () {
 
 		DecreaseTime();
+
 		try
 		{
 			CheckBoundaries();
@@ -33,17 +34,9 @@ public class MainScreenLogic : MonoBehaviour {
         if (spellMovementFlag)
         {
             SpellMovement();
-
-            float spellSpeed = GetComponent < MainScreenStats >().spellSpeed;
-            interpolant += Time.deltaTime / spellSpeed;
-            print(interpolant);
-            if (interpolant >= 1.0f)
-            {
-                interpolant = 0.0f;
-                Destroy(GameObject.Find("Spell"));
-                spellMovementFlag = false;
-            }
         }
+
+
 	}
 
 	// Private and Public Functions
@@ -119,7 +112,15 @@ public class MainScreenLogic : MonoBehaviour {
     /// </summary>
     public void SpellMovement()
     {
-        GameObject.Find("Spell").GetComponent< Transform >().position =  Vector3.Lerp(spellPosition, finalPosition, interpolant);        
+		GameObject.Find("Spell").GetComponent< Transform >().position =  Vector3.Lerp(spellPosition, finalPosition, interpolant);        
+		float spellSpeed = GetComponent < MainScreenStats >().spellSpeed;
+        interpolant += Time.deltaTime / spellSpeed;
+        if (interpolant >= 1.0f)
+        {
+            interpolant = 0.0f;
+            Destroy(GameObject.Find("Spell"));
+            spellMovementFlag = false;
+        }
     }
 
     /// <summary>
@@ -128,6 +129,7 @@ public class MainScreenLogic : MonoBehaviour {
     public void CheckBoundaries()
     {
 		Vector3 playerPosition = GameObject.Find("Player").transform.position;
+		Vector3 floorPosition = GameObject.Find("Floor").transform.position;
 		int worldHeight = GetComponent< MainScreenStats >().worldHeight;
 
 		if (playerPosition.y <= -worldHeight)
@@ -135,5 +137,36 @@ public class MainScreenLogic : MonoBehaviour {
 			GetComponent< MainScreenStats >().startGameFlag = false;
 			GetComponent< MainScreenStats >().endGameFlag = true;
 		}
+
+		if( floorPosition.y <= -worldHeight)
+		{
+			int width = GetComponent< MainScreenStats >().worldWidth;
+    		int height = GetComponent< MainScreenStats >().worldHeight;
+			int x = UnityEngine.Random.Range(-width,width);
+			int y = UnityEngine.Random.Range(-height,height);
+			GameObject.Find("Floor").transform.position = new Vector3(x, y, 0);
+		}
+    }
+
+    /// <summary>
+    /// Generates the platform at a random position.
+    /// </summary>
+    public void GenerateRandomPlatform(string prefabName)
+    {
+    	LoadPreFab(prefabName);
+		int width = GetComponent< MainScreenStats >().worldWidth;
+    	int height = GetComponent< MainScreenStats >().worldHeight;
+		int x = UnityEngine.Random.Range(-width,width);
+		int y = UnityEngine.Random.Range(-height,height);
+		GameObject.Find(prefabName).transform.position = new Vector3(x, y, 0);
+		print(GameObject.Find(prefabName).transform.position + "real");
+    }
+
+    /// <summary>
+    /// Exits the game.
+    /// </summary>
+    public void ExitGame()
+    {
+    	Application.Quit();
     }
 }

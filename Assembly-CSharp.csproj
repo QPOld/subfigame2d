@@ -50,14 +50,6 @@
      <Compile Include="Assets\CS\MainScreenGUI.cs" />
      <Compile Include="Assets\CS\MainScreenLogic.cs" />
      <Compile Include="Assets\CS\MainScreenStats.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\BoardManager.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\Enemy.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\Loader.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\MovingObject.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\Player.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\SoundManager.cs" />
-     <Compile Include="Assets\Model\Completed\Scripts\Wall.cs" />
      <Compile Include="Assets\Model\TutorialInfo\Scripts\TutorialInfo.cs" />
      <None Include="Assets\Model\TutorialInfo\Fonts\LICENSE.txt" />
      <None Include="Assets\Model\Fonts\OFL.txt" />
