@@ -39,7 +39,8 @@ public class MainScreenGUI : MonoBehaviour {
 		GetComponent< MainScreenStats>().startGameFlag = true;
 		GetComponent< MainScreenLogic >().LoadPreFab("Player");
 		GetComponent< MainScreenLogic >().GenerateRandomPlatform("Floor");
-	}
+		GetComponent< MainScreenLogic >().GenerateRandomPlatform("Floor 2");
+    }
 
 	/// <summary>
 	/// Updates and Displays information for the main screen.

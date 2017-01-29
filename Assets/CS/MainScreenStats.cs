@@ -10,9 +10,10 @@ public class MainScreenStats : MonoBehaviour {
 	public int timeLeftDelayMax = 99;
 	public bool startGameFlag = false;
 	public bool endGameFlag = false;
-	public float movementSpeed = 200.0f;
-	public float spellDistance = 5.0f;
-	public float spellSpeed = 5.0f;
+	public float movementSpeed = 20.0f;
+	public float jumpSpeed = 75.0f;
+    public float spellDistance = 25.0f;
+	public float spellSpeed = 25.0f;
 	public int worldHeight = 5;
 	public int worldWidth = 5;
 }

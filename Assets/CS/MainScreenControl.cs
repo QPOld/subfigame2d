@@ -32,7 +32,8 @@ public class MainScreenControl : MonoBehaviour {
 	/// <summary>
 	/// Gets the user key board input. The player can move left and right
 	/// with the arrow keys and jump with the space bar. Eventually the player
-	/// can fight enemies with spells casted with X.
+	/// can fight enemies with spells casted with X. The forces are just constants
+    /// multiplied by normal vectors to the sprite.
 	/// </summary>
 	private void GetUserKeyBoardInput ()
 	{
@@ -43,24 +44,25 @@ public class MainScreenControl : MonoBehaviour {
 		SpriteRenderer sprite = player.GetComponent< SpriteRenderer >(); // The players sprite.
 
 		float speed = GetComponent< MainScreenStats >().movementSpeed; // Player's movement speed.
+		float height = GetComponent< MainScreenStats >().jumpSpeed; // Player's movement speed.
 
-        if (Input.GetKeyDown (KeyCode.LeftArrow))
+        if (Input.GetKey (KeyCode.LeftArrow))
 		{
 			sprite.flipX = true; // Make sprite face to the left.
 			body.AddForce(-player.transform.right * speed); // Applies a force in the -x direction.
 		}
-		else if (Input.GetKeyDown (KeyCode.RightArrow))
+		else if (Input.GetKey (KeyCode.RightArrow))
 		{
 			sprite.flipX = false; // Make sprite face to the right.
 			body.AddForce(player.transform.right * speed); // Applies a force in the x direction.
 		}
 		else if (Input.GetKeyDown (KeyCode.Space))
 		{
-			body.AddForce(player.transform.up * speed); // Applies a force in the y direction.
+			body.AddForce(player.transform.up * height); // Applies a force in the y direction.
 		}
 		else if (Input.GetKeyDown (KeyCode.X))
         {
-			if (!GameObject.Find("Spell"))
+			if (!GameObject.Find("Spell")) //  Right now only one spell at a time.
             {
                 GetComponent< MainScreenLogic >().SpellCast(); // Cast a spell to attack and defend.
             }

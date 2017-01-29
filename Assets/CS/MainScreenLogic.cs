@@ -91,8 +91,9 @@ public class MainScreenLogic : MonoBehaviour {
         direction = player.GetComponent<SpriteRenderer>().flipX;
 
         Vector3 playerPosition = player.transform.position;
-        spellPosition = spell.transform.position;
+        
         spell.transform.position = player.transform.position; // Set position to the player position.
+        spellPosition = spell.transform.position; // private variable
 
         float spellDistance = GetComponent< MainScreenStats >().spellDistance;
         if (direction)
