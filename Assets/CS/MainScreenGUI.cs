@@ -9,10 +9,6 @@ public class MainScreenGUI : MonoBehaviour {
 	// Private and Public Variables
 
 	// Event Functions
-	private void Awake ()
-	{
-		
-	}
 	private void OnGUI ()
 	{
 		if (GetComponent< MainScreenStats >().startGameFlag)
@@ -37,9 +33,7 @@ public class MainScreenGUI : MonoBehaviour {
 		Destroy(GameObject.Find("Exit Button"));
 		GameObject.Find("Game Text").GetComponent< Text >().text = "";
 		GetComponent< MainScreenStats>().startGameFlag = true;
-		GetComponent< MainScreenLogic >().LoadPreFab("Player");
-		GetComponent< MainScreenLogic >().GenerateRandomPlatform("Floor");
-		GetComponent< MainScreenLogic >().GenerateRandomPlatform("Floor 2");
+		GetComponent< MainScreenLogic >().levelGeneration();
     }
 
 	/// <summary>
@@ -51,22 +45,20 @@ public class MainScreenGUI : MonoBehaviour {
 		GameObject.Find("Total Score").GetComponent< Text >().text = GetComponent< MainScreenStats >().totalScore.ToString();
 	}
 
+    /// <summary>
+    /// This screen is shown when the time runs out or the player falls off.
+    /// It destroys the dynamically generated prefabs and displays a restart button.
+    /// </summary>
 	private void DisplayEndScreen()
 	{
 		Destroy(GameObject.Find("Player"));
 		Destroy(GameObject.Find("Time Left"));
 		Destroy(GameObject.Find("Total Score"));
-		Destroy(GameObject.Find("Floor"));
-		GameObject.Find("Game Text").GetComponent< Text >().text = "End Game";
+        GetComponent<MainScreenLogic>().levelDestruction();
+        GameObject.Find("Game Text").GetComponent< Text >().text = "End Game";
 		if (GUI.Button(new Rect(35, 35, 60, 30), "Restart"))
 		{
 			SceneManager.LoadScene("MainScreen"); // Reloads the screen.
 		}
-		DisplayHighScores();
-	}
-
-	private void DisplayHighScores()
-	{
-		
 	}
 }

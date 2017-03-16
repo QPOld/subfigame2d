@@ -1,52 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System;
 
 
 public class MainScreenLogic : MonoBehaviour {
 
 	// Private and Public Variables
-
 	private int timeLeftDelayCounter = 0;
-    private float interpolant = 0.0f;
-    private bool spellMovementFlag = false;
-    private bool direction;
-    private Vector3 spellPosition;
-    private Vector3 finalPosition;
 
     // Event Functions
-
     private void Update () {
-
 		DecreaseTime();
-
-		try
-		{
-			CheckBoundaries();
-
-		}
-		catch (Exception)
-		{
-			// Maybe put something here.
-		}
-
-        if (spellMovementFlag)
+        try
         {
-            SpellMovement();
+            CheckBoundaries();
         }
+        catch (Exception)
+        {
+            //Put something here.
+        }
+    }
 
-
-	}
-
-	// Private and Public Functions
-
-	/// <summary>
-	/// Decreases the time. The global time left variable is decreased with a delay
-	///	given in <see cref="MainScreenStats"/>. If the timer reaches zero then
-	/// the startGameFlag is false and the end game false is true;
-	/// </summary>
-	public void DecreaseTime()
+    // Private and Public Functions
+    /// <summary>
+    /// Decreases the time. The global time left variable is decreased with a delay
+    ///	given in <see cref="MainScreenStats"/>. If the timer reaches zero then
+    /// the startGameFlag is false and the end game false is true;
+    /// </summary>
+    private void DecreaseTime()
 	{
 		int timeLeft = GetComponent< MainScreenStats >().timeLeft;
 		if (timeLeft <= 0)
@@ -68,99 +51,63 @@ public class MainScreenLogic : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// This will be a generic level generation tool for the game. As the player progress it will have to fill
+    /// in the gaps of the level. Right now it just creates a bottom floor for the player to stand on.
+    /// </summary>
+    public void levelGeneration()
+    {
+        LoadPreFab("Player", "Player", new Vector3(0, -4, 0));
+        int maxN = GetComponent<MainScreenStats>().maxNumberOfObjects;
+        for (int i = 0; i < maxN; i++)
+        {
+            LoadPreFab("Floor_1", "Platform_" + i.ToString(), new Vector3( (20.0f/maxN) * i - 10, -5, 0));
+        }
+    }
+
+    /// <summary>
+    /// All floor prefabs get a typical name like Floor_23, etc. This function just loops through all possible prefabs
+    /// and destroys them. This destroys the entire level. It is only used when time runs out or the player dies.
+    /// </summary>
+    public void levelDestruction()
+    {
+        
+        int maxN = GetComponent<MainScreenStats>().maxNumberOfObjects;
+        for (int i = 0; i < maxN; i++)
+        {
+            Destroy(GameObject.Find("Floor_" + i.ToString()));
+        }
+    }
+
+    /// <summary>
+    /// A rect is created around the camera view box. If the player leaves the box then the end game screen appears.
+    /// Since the game will involve lots of vertical jumping the height of the allowed space needs to be higher than
+    /// the actual camera viewport.
+    /// </summary>
+    public void CheckBoundaries()
+    {
+        float height = GetComponent<MainScreenStats>().height; // 
+        float width = GetComponent<MainScreenStats>().width;
+        Vector3 playerPosition = GameObject.Find("Player").transform.position; // Current player position.
+        int scale = 2; // Make the player be able to jump veritcally out of the screen.
+        Rect rect = new Rect(-width/2, -height/2 , width, scale * height);
+        if (!rect.Contains(playerPosition)) // Game over if not inside box.
+        {
+            GetComponent<MainScreenStats>().startGameFlag = false;
+            GetComponent<MainScreenStats>().endGameFlag = true;
+        }
+            
+    }
+
 	/// <summary>
 	/// Loads the pre fab with a name given by prefabName.
 	/// </summary>
 	/// <param name="prefabName">Prefab name.</param>
-	public void LoadPreFab(string prefabName)
+	public void LoadPreFab(string prefabName, string uniqueID, Vector3 prefabPosition)
     {
         GameObject prefabObject = GameObject.Instantiate ( (GameObject)Resources.Load (prefabName) );
-        prefabObject.name = prefabName;
-    }
-
-    /// <summary>
-    /// Cast the spell when the space bar is hit.
-    /// </summary>
-    public void SpellCast()
-    {
-        LoadPreFab("Spell"); // Load in the prefab for the spell sprite.
-
-        GameObject player = GameObject.Find("Player");
-        GameObject spell = GameObject.Find("Spell");
-
-        direction = player.GetComponent<SpriteRenderer>().flipX;
-
-        Vector3 playerPosition = player.transform.position;
-        
-        spell.transform.position = player.transform.position; // Set position to the player position.
-        spellPosition = spell.transform.position; // private variable
-
-        float spellDistance = GetComponent< MainScreenStats >().spellDistance;
-        if (direction)
-        {
-            finalPosition = new Vector3(-spellDistance, playerPosition.y, playerPosition.z);
-        }
-        else
-        {
-			finalPosition = new Vector3(spellDistance, playerPosition.y, playerPosition.z);
-        }
-        spellMovementFlag = true;
-    }
-
-    /// <summary>
-    /// This moves the spell sprite when the space bar is pressed.
-    /// FIX THIS
-    /// </summary>
-    public void SpellMovement()
-    {
-		GameObject.Find("Spell").GetComponent< Transform >().position =  Vector3.Lerp(spellPosition, finalPosition, interpolant);        
-		float spellSpeed = GetComponent < MainScreenStats >().spellSpeed;
-        interpolant += Time.deltaTime / spellSpeed;
-        if (interpolant >= 1.0f)
-        {
-            interpolant = 0.0f;
-            Destroy(GameObject.Find("Spell"));
-            spellMovementFlag = false;
-        }
-    }
-
-    /// <summary>
-    /// Checks the boundaries for the game so the player does not fly out into infinity.
-    /// </summary>
-    public void CheckBoundaries()
-    {
-		Vector3 playerPosition = GameObject.Find("Player").transform.position;
-		Vector3 floorPosition = GameObject.Find("Floor").transform.position;
-		int worldHeight = GetComponent< MainScreenStats >().worldHeight;
-
-		if (playerPosition.y <= -worldHeight)
-		{
-			GetComponent< MainScreenStats >().startGameFlag = false;
-			GetComponent< MainScreenStats >().endGameFlag = true;
-		}
-
-		if( floorPosition.y <= -worldHeight)
-		{
-			int width = GetComponent< MainScreenStats >().worldWidth;
-    		int height = GetComponent< MainScreenStats >().worldHeight;
-			int x = UnityEngine.Random.Range(-width,width);
-			int y = UnityEngine.Random.Range(-height,height);
-			GameObject.Find("Floor").transform.position = new Vector3(x, y, 0);
-		}
-    }
-
-    /// <summary>
-    /// Generates the platform at a random position.
-    /// </summary>
-    public void GenerateRandomPlatform(string prefabName)
-    {
-    	LoadPreFab(prefabName);
-		int width = GetComponent< MainScreenStats >().worldWidth;
-    	int height = GetComponent< MainScreenStats >().worldHeight;
-		int x = UnityEngine.Random.Range(-width,width);
-		int y = UnityEngine.Random.Range(-height,height);
-		GameObject.Find(prefabName).transform.position = new Vector3(x, y, 0);
-		print(GameObject.Find(prefabName).transform.position + "real");
+        prefabObject.name = uniqueID;
+        prefabObject.transform.position = prefabPosition;
     }
 
     /// <summary>
