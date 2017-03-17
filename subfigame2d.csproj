@@ -75,15 +75,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CS\CollisionDetection.cs" />
     <Compile Include="Assets\CS\MainScreenControl.cs" />
     <Compile Include="Assets\CS\MainScreenGUI.cs" />
     <Compile Include="Assets\CS\MainScreenLogic.cs" />
     <Compile Include="Assets\CS\MainScreenStats.cs" />
+    <Compile Include="Assets\Model\Scripts\ActiveStateToggler.cs" />
+    <Compile Include="Assets\Model\Scripts\ApplicationManager.cs" />
+    <Compile Include="Assets\Model\Scripts\ChangeColor.cs" />
+    <Compile Include="Assets\Model\Scripts\DragMe.cs" />
+    <Compile Include="Assets\Model\Scripts\DragPanel.cs" />
+    <Compile Include="Assets\Model\Scripts\DropMe.cs" />
+    <Compile Include="Assets\Model\Scripts\PanelManager.cs" />
+    <Compile Include="Assets\Model\Scripts\ResizePanel.cs" />
+    <Compile Include="Assets\Model\Scripts\ScrollDetailTexture.cs" />
+    <Compile Include="Assets\Model\Scripts\ShowSliderValue.cs" />
+    <Compile Include="Assets\Model\Scripts\TiltWindow.cs" />
     <Compile Include="Assets\Model\TutorialInfo\Scripts\TutorialInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Model\Fonts\OFL.txt" />
     <None Include="Assets\Model\Galaxia Sprite Pack %231\README.txt" />
+    <None Include="Assets\Model\Materials\UI-Default-No-Alpha.shader" />
+    <None Include="Assets\Model\Models\Fonts\Jupiter\LICENSE.txt" />
+    <None Include="Assets\Model\Textures and Sprites\SF UI\Background\LICENSE.txt" />
     <None Include="Assets\Model\TutorialInfo\Fonts\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

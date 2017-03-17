@@ -15,7 +15,7 @@ public class MainScreenControl : MonoBehaviour {
 	{
 		StartScreenController();
 	}
-	private void FixedUpdate ()
+	private void FixedUpdate () // Movement is force based.
 	{
 		try
 		{
@@ -45,15 +45,15 @@ public class MainScreenControl : MonoBehaviour {
 
 		float speed = GetComponent< MainScreenStats >().movementSpeed; // Player's movement speed.
 		float height = GetComponent< MainScreenStats >().jumpSpeed; // Player's jump speed.
-        float rotate = GetComponent<MainScreenStats>().rotateSpeed;// Player's rotate speed.
+        float rotate = GetComponent< MainScreenStats >().rotateSpeed;// Player's rotate speed.
 
-        if (Input.GetKey (KeyCode.LeftArrow))
+        if (Input.GetKeyDown (KeyCode.LeftArrow))
 		{
 			sprite.flipX = true; // Make sprite face to the left.
             body.AddTorque(rotate);
 			body.AddForce(-player.transform.right * speed); // Applies a force in the -x direction.
 		}
-		else if (Input.GetKey (KeyCode.RightArrow))
+		else if (Input.GetKeyDown (KeyCode.RightArrow))
 		{
 			sprite.flipX = false; // Make sprite face to the right.
             body.AddTorque(-rotate);
@@ -62,6 +62,7 @@ public class MainScreenControl : MonoBehaviour {
 		else if (Input.GetKeyDown (KeyCode.Space))
 		{
 			body.AddForce(player.transform.up * height); // Applies a force in the y direction.
+            GetComponent<MainScreenLogic>().MoveAndRotatePrefabTo("Platform_1", new Vector3(0, 3, 0), new Quaternion(0.0f, 0.0f, 1.0f, 0.0f), 5);
 		}
 	}
 

@@ -8,12 +8,12 @@ using System;
 public class MainScreenLogic : MonoBehaviour {
 
 	// Private and Public Variables
-	private int timeLeftDelayCounter = 0;
+	private int timeLeftDelayCounter = 0; // Temp var to count.
 
     // Event Functions
     private void Update () {
 		DecreaseTime();
-        try
+        try // The player doesn't exist at all times so try it.
         {
             CheckBoundaries();
         }
@@ -22,8 +22,10 @@ public class MainScreenLogic : MonoBehaviour {
             //Put something here.
         }
     }
-
+    
+    
     // Private and Public Functions
+
     /// <summary>
     /// Decreases the time. The global time left variable is decreased with a delay
     ///	given in <see cref="MainScreenStats"/>. If the timer reaches zero then
@@ -32,10 +34,10 @@ public class MainScreenLogic : MonoBehaviour {
     private void DecreaseTime()
 	{
 		int timeLeft = GetComponent< MainScreenStats >().timeLeft;
-		if (timeLeft <= 0)
+		if (timeLeft <= 0) // Player ran out of time.
 		{
-			GetComponent< MainScreenStats >().startGameFlag = false;
-			GetComponent< MainScreenStats >().endGameFlag = true;
+			GetComponent< MainScreenStats >().startGameFlag = false; // Turn main screen off.
+			GetComponent< MainScreenStats >().endGameFlag = true; // Turn end screen on.
 		}
 		else
 		{
@@ -54,11 +56,13 @@ public class MainScreenLogic : MonoBehaviour {
     /// <summary>
     /// This will be a generic level generation tool for the game. As the player progress it will have to fill
     /// in the gaps of the level. Right now it just creates a bottom floor for the player to stand on.
+    /// Walkable floors need a platform ID, Spikes need damage ID, flowers need boost ID, food/drink need energy ID.
     /// </summary>
     public void levelGeneration()
     {
         LoadPreFab("Player", "Player", new Vector3(0, -4, 0));
         int maxN = GetComponent<MainScreenStats>().maxNumberOfObjects;
+        // Floor
         for (int i = 0; i < maxN; i++)
         {
             LoadPreFab("Floor_1", "Platform_" + i.ToString(), new Vector3( (20.0f/maxN) * i - 10, -5, 0));
@@ -75,7 +79,7 @@ public class MainScreenLogic : MonoBehaviour {
         int maxN = GetComponent<MainScreenStats>().maxNumberOfObjects;
         for (int i = 0; i < maxN; i++)
         {
-            Destroy(GameObject.Find("Floor_" + i.ToString()));
+            Destroy(GameObject.Find("Platform_" + i.ToString()));
         }
     }
 
@@ -108,6 +112,43 @@ public class MainScreenLogic : MonoBehaviour {
         GameObject prefabObject = GameObject.Instantiate ( (GameObject)Resources.Load (prefabName) );
         prefabObject.name = uniqueID;
         prefabObject.transform.position = prefabPosition;
+    }
+
+    /// <summary>
+    /// Finds the prefab with the name uniqueID and translate to the position to prefabPosition.
+    /// </summary>
+    /// <param name="uniqueID">Name of the prefab.</param>
+    /// <param name="newPrefabPosition">The new prefab Position.</param>
+    /// <param name="time">The time it takes to do the LERP.</param>
+    /// <returns></returns>
+    private IEnumerator TranslateAndRotatePrefab(string uniqueID, Vector3 newPrefabPosition, Quaternion newPrefabRotation, float time)
+    {
+        float elapsedTime = 0;
+        Vector3 oldPrefabPosition = GameObject.Find(uniqueID).transform.position;
+        Quaternion oldPrefabRotation = GameObject.Find(uniqueID).transform.rotation;
+
+
+        while (elapsedTime < time)
+        {
+            GameObject.Find(uniqueID).transform.position = Vector3.Lerp(oldPrefabPosition, newPrefabPosition, (elapsedTime / time));
+            if (newPrefabRotation != Quaternion.identity)
+            {
+                GameObject.Find(uniqueID).transform.rotation = Quaternion.Lerp(oldPrefabRotation, newPrefabRotation, (elapsedTime / time));
+            }
+            elapsedTime += Time.deltaTime;
+            yield return time;
+        }
+    }
+
+    /// <summary>
+    /// Wrapper for TranslatePrefab. Call it to translate any gameobject to any position in time t.
+    /// </summary>
+    /// <param name="uniqueID">Name of the prefab</param>
+    /// <param name="newPrefabPosition">Vector3 position for the prefab</param>
+    /// <param name="time">The time to move the gameobject.</param>
+    public void MoveAndRotatePrefabTo(string uniqueID, Vector3 newPrefabPosition, Quaternion newPrefabRotation, float time)
+    {
+        StartCoroutine(TranslateAndRotatePrefab(uniqueID, newPrefabPosition, newPrefabRotation, time));
     }
 
     /// <summary>

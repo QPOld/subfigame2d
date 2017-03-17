@@ -6,10 +6,15 @@ using UnityEngine.UI;
 
 public class MainScreenGUI : MonoBehaviour {
 
-	// Private and Public Variables
-
-	// Event Functions
-	private void OnGUI ()
+    // Private and Public Variables
+    GUIContent restartButtonContent = new GUIContent();
+    // Event Functions
+    private void Awake()
+    {
+        restartButtonContent.image = Resources.Load("/Texture/Sf Button.psd") as Texture2D;
+        restartButtonContent.text = "Restart";
+    }
+    private void OnGUI ()
 	{
 		if (GetComponent< MainScreenStats >().startGameFlag)
 		{
@@ -32,8 +37,8 @@ public class MainScreenGUI : MonoBehaviour {
 		Destroy(GameObject.Find("Start Button"));
 		Destroy(GameObject.Find("Exit Button"));
 		GameObject.Find("Game Text").GetComponent< Text >().text = "";
-		GetComponent< MainScreenStats>().startGameFlag = true;
-		GetComponent< MainScreenLogic >().levelGeneration();
+		GetComponent< MainScreenStats>().startGameFlag = true; // Show the main screen.
+		GetComponent< MainScreenLogic >().levelGeneration(); // Generate the level.
     }
 
 	/// <summary>
@@ -54,9 +59,9 @@ public class MainScreenGUI : MonoBehaviour {
 		Destroy(GameObject.Find("Player"));
 		Destroy(GameObject.Find("Time Left"));
 		Destroy(GameObject.Find("Total Score"));
-        GetComponent<MainScreenLogic>().levelDestruction();
+        GetComponent<MainScreenLogic>().levelDestruction(); // Destroy all of the levels.
         GameObject.Find("Game Text").GetComponent< Text >().text = "End Game";
-		if (GUI.Button(new Rect(35, 35, 60, 30), "Restart"))
+		if (GUI.Button(new Rect(Screen.width/2, Screen.height/2, 60, 30), restartButtonContent)) // Maybe make this has a prefab then have a seperate function for it.
 		{
 			SceneManager.LoadScene("MainScreen"); // Reloads the screen.
 		}

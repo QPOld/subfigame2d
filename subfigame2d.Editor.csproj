@@ -125,6 +125,9 @@
   <ItemGroup>
     <None Include="Assets\Model\Fonts\OFL.txt" />
     <None Include="Assets\Model\Galaxia Sprite Pack %231\README.txt" />
+    <None Include="Assets\Model\Materials\UI-Default-No-Alpha.shader" />
+    <None Include="Assets\Model\Models\Fonts\Jupiter\LICENSE.txt" />
+    <None Include="Assets\Model\Textures and Sprites\SF UI\Background\LICENSE.txt" />
     <None Include="Assets\Model\TutorialInfo\Fonts\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

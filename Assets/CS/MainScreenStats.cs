@@ -17,17 +17,24 @@ public class MainScreenStats : MonoBehaviour {
     public float height;
     public float width;
 
+    // This allows for the inspector to auto update upon starting the game.
     private void Awake()
     {
-        timeLeft = 99;
         totalScore = 0;
-        timeLeftDelayMax = 99;
-        maxNumberOfObjects = 25;
+        timeLeft = 99; // Current time left.
+        timeLeftDelayMax = 99; // The delay counter for the game timer. This gets smaller as the game progresses.
+        maxNumberOfObjects = 25; // Max number of objects that will be loaded at once.
+
+        // Off and On Flags.
         startGameFlag = false;
         endGameFlag = false;
-        movementSpeed = 15.5f;
-        jumpSpeed = 600.0f;
+
+        // Fiddle with these to make it smooth.
+        movementSpeed = 150.5f;
+        jumpSpeed = 100.0f;
         rotateSpeed = 2.0f;
+
+        // In 2D, the height and width must be calculated from the camera view.
         height = Camera.main.orthographicSize * 2.0f;
         width = height * Camera.main.aspect;
     }
