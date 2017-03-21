@@ -11,6 +11,7 @@ public class MainScreenGUI : MonoBehaviour {
     // Event Functions
     private void Awake()
     {
+        // I have a feeling this should be inside its own function or even just dropped all together.
         restartButtonContent.image = Resources.Load("/Texture/Sf Button.psd") as Texture2D;
         restartButtonContent.text = "Restart";
     }
@@ -59,7 +60,7 @@ public class MainScreenGUI : MonoBehaviour {
 		Destroy(GameObject.Find("Player"));
 		Destroy(GameObject.Find("Time Left"));
 		Destroy(GameObject.Find("Total Score"));
-        GetComponent<MainScreenLogic>().levelDestruction(); // Destroy all of the levels.
+        GetComponent<MainScreenLogic>().levelDestruction(); // Destroy all of the level objects.
         GameObject.Find("Game Text").GetComponent< Text >().text = "End Game";
 		if (GUI.Button(new Rect(Screen.width/2, Screen.height/2, 60, 30), restartButtonContent)) // Maybe make this has a prefab then have a seperate function for it.
 		{

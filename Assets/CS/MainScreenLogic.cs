@@ -21,6 +21,7 @@ public class MainScreenLogic : MonoBehaviour {
         {
             //Put something here.
         }
+
     }
     
     
@@ -54,9 +55,8 @@ public class MainScreenLogic : MonoBehaviour {
 	}
 
     /// <summary>
-    /// This will be a generic level generation tool for the game. As the player progress it will have to fill
-    /// in the gaps of the level. Right now it just creates a bottom floor for the player to stand on.
-    /// Walkable floors need a platform ID, Spikes need damage ID, flowers need boost ID, food/drink need energy ID.
+    /// This will be a generic level generation tool for the game Right now it just creates a bottom floor for the player to stand on.
+    /// Walkable floors need a platform ID, Spikes need damage ID, flowers need boost ID, food/drink need energy ID, etc.
     /// </summary>
     public void levelGeneration()
     {
@@ -70,7 +70,18 @@ public class MainScreenLogic : MonoBehaviour {
     }
 
     /// <summary>
-    /// All floor prefabs get a typical name like Floor_23, etc. This function just loops through all possible prefabs
+    /// As the player progress the game will need to be able to dynamically change the world around the player. Instead of creating
+    /// and destory then recreating the game will move the game objects. Unless there is some bottleneck with multiple lerp happening
+    /// at once it should be much faster and smoother. 
+    /// </summary>
+    public void levelEvolution()
+    {
+        int maxN = GetComponent<MainScreenStats>().maxNumberOfObjects;
+
+    }
+
+    /// <summary>
+    /// All floor prefabs get a name like Platform_##, etc. This function just loops through all possible prefabs
     /// and destroys them. This destroys the entire level. It is only used when time runs out or the player dies.
     /// </summary>
     public void levelDestruction()
@@ -94,7 +105,7 @@ public class MainScreenLogic : MonoBehaviour {
         float width = GetComponent<MainScreenStats>().width;
         Vector3 playerPosition = GameObject.Find("Player").transform.position; // Current player position.
         int scale = 2; // Make the player be able to jump veritcally out of the screen.
-        Rect rect = new Rect(-width/2, -height/2 , width, scale * height);
+        Rect rect = new Rect(-width/2, -height/2 , width, scale * height); // A rectangle made of the actual view.
         if (!rect.Contains(playerPosition)) // Game over if not inside box.
         {
             GetComponent<MainScreenStats>().startGameFlag = false;
@@ -126,7 +137,6 @@ public class MainScreenLogic : MonoBehaviour {
         float elapsedTime = 0;
         Vector3 oldPrefabPosition = GameObject.Find(uniqueID).transform.position;
         Quaternion oldPrefabRotation = GameObject.Find(uniqueID).transform.rotation;
-
 
         while (elapsedTime < time)
         {

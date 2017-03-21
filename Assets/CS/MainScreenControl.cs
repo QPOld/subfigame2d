@@ -62,7 +62,7 @@ public class MainScreenControl : MonoBehaviour {
 		else if (Input.GetKeyDown (KeyCode.Space))
 		{
 			body.AddForce(player.transform.up * height); // Applies a force in the y direction.
-            GetComponent<MainScreenLogic>().MoveAndRotatePrefabTo("Platform_1", new Vector3(0, 3, 0), new Quaternion(0.0f, 0.0f, 1.0f, 0.0f), 5);
+            GetComponent< MainScreenLogic >().MoveAndRotatePrefabTo("Platform_1", new Vector3(0, 3, 0), new Quaternion(0.0f, 0.0f, 1.0f, 0.0f), 5); // Testing some API.
 		}
 	}
 
